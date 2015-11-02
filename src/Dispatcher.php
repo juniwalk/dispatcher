@@ -100,10 +100,10 @@ final class Dispatcher implements IDispatcher
     {
         // Create template instance using the type of the queued entry
         $template = $this->templateFactory->createTemplate();
+        $template->setTranslator($this->translator);
 
         // Assign basic variables to the template
         $template->locale = $this->translator->getLocale();
-        $template->translator = $this->translator;
         $template->_control = $this->linkFactory;
 
         // Set the path to the template file of the message
