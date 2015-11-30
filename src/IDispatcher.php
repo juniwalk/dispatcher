@@ -12,9 +12,9 @@ namespace JuniWalk\Dispatcher;
 
 interface IDispatcher
 {
-    /**
-     * Dispatch email message to given recipients.
-     * @param IMessage  $message  Email message
-     */
-    public function dispatch(IMessage $message);
+	/**
+	 * Dispatch email message to given recipients.
+	 * @param IMessage  $message  Email message
+	 */
+	public function dispatch(IMessage $message);
 }
