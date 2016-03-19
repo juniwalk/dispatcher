@@ -13,8 +13,27 @@ namespace JuniWalk\Dispatcher;
 interface IDispatcher
 {
 	/**
-	 * Dispatch email message to given recipients.
-	 * @param IMessage  $message  Email message
+	 * @param string|NULL  $sender
 	 */
-	public function dispatch(IMessage $message);
+	public function setSender($sender = NULL);
+
+
+	/**
+	 * @return string|NULL
+	 */
+	public function getSender();
+
+
+	/**
+	 * @return Nette\Application\UI\ITemplate
+	 */
+	public function createTemplate();
+
+
+	/**
+	 * @param IMessageFactory  $messageFactory
+	 * @throw InvalidMessageException
+	 * @throw DispatchException
+	 */
+	public function dispatch(IMessageFactory $messageFactory);
 }

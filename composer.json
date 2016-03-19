@@ -2,26 +2,27 @@
 	"name": "juniwalk/dispatcher",
 	"type": "library",
 	"description": "Email dispatcher for nette/mail library.",
-	"keywords": ["nette", "mail", "dispatcher", "sender"],
+	"keywords": ["nette", "mail", "email", "dispatcher", "sender"],
 	"license": "MIT",
-	"authors": [
-		{
-			"name": "Martin Procházka",
-			"email": "juniwalk@outlook.cz",
-			"role": "Developer"
-		}
-	],
+
+	"authors": [{
+		"name": "Martin Procházka",
+		"email": "juniwalk@outlook.cz",
+		"role": "Developer"
+	}],
+
 	"support": {
-		"issues": "https://github.com/juniwalk/Dispatcher/issues"
+		"issues": "https://github.com/juniwalk/dispatcher/issues"
 	},
+
 	"require": {
-        "php": ">=5.4.0",
-		"nette/application": "~2.3",
-		"nette/mail": "~2.3"
+		"php": ">=5.4.0",
+		"nette/application": "^2.3",
+		"nette/mail": "^2.3"
 	},
+
 	"autoload": {
-		"psr-4": {
-			"JuniWalk\\Dispatcher\\": "src/"
-		}
+		"psr-4": {"JuniWalk\\Dispatcher\\": "src/"},
+		"classmap": ["src/exceptions.php"]
 	}
 }
