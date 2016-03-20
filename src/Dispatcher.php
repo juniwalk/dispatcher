@@ -42,7 +42,7 @@ final class Dispatcher implements IDispatcher
 	 * @param ITemplateFactory  $templateFactory
 	 * @param LinkGenerator     $linkFactory
 	 */
-	final public function __construct($wwwDir = NULL, IMailer $mailer, ITemplateFactory $templateFactory, LinkGenerator $linkFactory)
+	public function __construct($wwwDir = NULL, IMailer $mailer, ITemplateFactory $templateFactory, LinkGenerator $linkFactory)
 	{
 		$this->wwwDir = $wwwDir;
 		$this->mailer = $mailer;
@@ -100,7 +100,7 @@ final class Dispatcher implements IDispatcher
 			throw new InvalidMessageException;
 		}
 
-		if ($this->sender && !$message->getFrom()) {
+		if (!empty($this->sender) && !$message->getFrom()) {
 			$message->setFrom($this->sender);
 		}
 
