@@ -32,7 +32,7 @@ final class Dispatcher implements IDispatcher
 	/** @var IMailer */
 	private $mailer;
 
-	/** @var string */
+	/** @var string|NULL */
 	private $sender;
 
 
@@ -114,7 +114,7 @@ final class Dispatcher implements IDispatcher
 
 
 	/**
-	 * @return Nette\Application\UI\ITemplate
+	 * @return \Nette\Application\UI\ITemplate
 	 */
 	private function createTemplate()
 	{
