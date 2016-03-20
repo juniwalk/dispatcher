@@ -17,7 +17,7 @@ use Nette\Mail\IMailer;
 
 final class Dispatcher implements IDispatcher
 {
-	/** @var string */
+	/** @var string|NULL */
 	private $wwwDir;
 
 	/** @var ITemplateFactory */
@@ -26,8 +26,8 @@ final class Dispatcher implements IDispatcher
 	/** @var LinkGenerator */
 	private $linkFactory;
 
-	/** @var ITranslator */
-	private $translator;
+	/** @var ITranslator|NULL */
+	private $translator = NULL;
 
 	/** @var IMailer */
 	private $mailer;
@@ -37,19 +37,35 @@ final class Dispatcher implements IDispatcher
 
 
 	/**
-	 * @param string            $wwwDir
+	 * @param string|NULL       $wwwDir
 	 * @param IMailer           $mailer
 	 * @param ITemplateFactory  $templateFactory
 	 * @param LinkGenerator     $linkFactory
-	 * @param ITranslator|NULL  $translator
 	 */
-	final public function __construct($wwwDir, IMailer $mailer, ITemplateFactory $templateFactory, LinkGenerator $linkFactory, ITranslator $translator = NULL)
+	final public function __construct($wwwDir = NULL, IMailer $mailer, ITemplateFactory $templateFactory, LinkGenerator $linkFactory)
 	{
 		$this->wwwDir = $wwwDir;
 		$this->mailer = $mailer;
 		$this->templateFactory = $templateFactory;
 		$this->linkFactory = $linkFactory;
+	}
+
+
+	/**
+	 * @param ITranslator|NULL  $translator
+	 */
+	public function setTranslator(ITranslator $translator = NULL)
+	{
 		$this->translator = $translator;
+	}
+
+
+	/**
+	 * @return ITranslator|NULL
+	 */
+	public function getTranslator()
+	{
+		return $this->translator;
 	}
 
 
@@ -68,20 +84,6 @@ final class Dispatcher implements IDispatcher
 	public function getSender()
 	{
 		return $this->sender;
-	}
-
-
-	/**
-	 * @return Nette\Application\UI\ITemplate
-	 */
-	public function createTemplate()
-	{
-		$template = $this->templateFactory->createTemplate();
-		$template->setTranslator($this->translator);
-		$template->add('_control', $this->linkFactory);
-		$template->add('wwwDir', $this->wwwDir);
-
-		return $template;
 	}
 
 
@@ -108,5 +110,19 @@ final class Dispatcher implements IDispatcher
 		} catch (\Nette\Mail\SendException $e) {
 			throw new DispatchException(NULL, 0, $e);
 		}
+	}
+
+
+	/**
+	 * @return Nette\Application\UI\ITemplate
+	 */
+	private function createTemplate()
+	{
+		$template = $this->templateFactory->createTemplate();
+		$template->setTranslator($this->translator);
+		$template->_control = $this->linkFactory;
+		$template->wwwDir = $this->wwwDir;
+
+		return $template;
 	}
 }

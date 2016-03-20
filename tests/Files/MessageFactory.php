@@ -11,13 +11,23 @@
 namespace JuniWalk\Dispatcher\Tests\Files;
 
 use Nette\Application\UI\ITemplate;
+use Tester\Assert;
 
-final class TestMessage implements IMessageFactory
+final class MessageFactory implements \JuniWalk\Dispatcher\IMessageFactory
 {
 	/**
 	 * @param  ITemplate  $html
 	 * @param  string     $wwwDir
 	 * @return Nette\Mailer\Message
 	 */
-	public function create(ITemplate $html, $wwwDir = NULL);
+	public function create(ITemplate $html, $wwwDir = NULL)
+	{
+		$html->setFile(__DIR__.'/templates/message.latte');
+
+		Assert::same($wwwDir, $html->wwwDir);
+
+		return (new \Nette\Mail\Message)
+			->setHtmlBody($html->__toString(1), $wwwDir)
+			->addTo('jane.doe@example.com');
+	}
 }

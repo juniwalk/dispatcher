@@ -10,6 +10,8 @@
 
 namespace JuniWalk\Dispatcher\DI;
 
+use Nette\Localization\ITranslator;
+
 final class DispatcherExtension extends \Nette\DI\CompilerExtension
 {
 	/** @var array */
@@ -31,5 +33,16 @@ final class DispatcherExtension extends \Nette\DI\CompilerExtension
 		$builder->addDefinition($this->prefix('dispatcher'))
 			->setClass('JuniWalk\Dispatcher\Dispatcher', [$wwwDir])
 			->addSetup('setSender', (array) $config['sender']);
+	}
+
+
+	public function beforeCompile()
+	{
+		$builder = $this->getContainerBuilder();
+		$dispatcher = $builder->getDefinition($this->prefix('dispatcher'));
+
+		if ($translator = $builder->getByType(ITranslator::class)) {
+			$dispatcher->addSetup('setTranslator', ['@'.$translator]);
+		}
 	}
 }

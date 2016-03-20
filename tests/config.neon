@@ -1,0 +1,22 @@
+
+php:
+	date.timezone: Europe/Prague
+
+session:
+	autoStart: FALSE
+
+application:
+	scanDirs: FALSE
+
+services:
+	cacheStorage: Nette\Caching\Storages\MemoryStorage
+	nette.mailer: JuniWalk\Dispatcher\Tests\Files\Mailer
+	- JuniWalk\Dispatcher\Tests\Files\Translator
+
+extensions:
+	dispatcher: JuniWalk\Dispatcher\DI\DispatcherExtension
+
+
+# JuniWalk \ Dispatcher
+dispatcher:
+	sender: "John Doe <john.doe@example.com>"

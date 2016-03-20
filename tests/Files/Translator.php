@@ -10,16 +10,15 @@
 
 namespace JuniWalk\Dispatcher\Tests\Files;
 
-use Nette\Mail\Message;
-
-final class TestMailer implements \Nette\Mail\IMailer
+final class Translator implements \Nette\Localization\ITranslator
 {
 	/**
-	 * @param Message  $message
-	 * @throw Nette\Mail\SendException
+	 * @param  string    $message
+	 * @param  int|NULL  $count
+	 * @return string
 	 */
-	public function send(Message $message)
+	public function translate($message, $count = NULL)
 	{
-		// decide how to handle this
+		return $message;
 	}
 }
