@@ -11,6 +11,7 @@
 namespace JuniWalk\Dispatcher\DI;
 
 use Nette\Localization\ITranslator;
+use Psr\Log\LoggerInterface;
 
 final class DispatcherExtension extends \Nette\DI\CompilerExtension
 {
@@ -43,6 +44,10 @@ final class DispatcherExtension extends \Nette\DI\CompilerExtension
 
 		if ($translator = $builder->getByType(ITranslator::class)) {
 			$dispatcher->addSetup('setTranslator', ['@'.$translator]);
+		}
+
+		if ($logger = $builder->getByType(LoggerInterface::class)) {
+			$dispatcher->addSetup('setLogger', ['@'.$logger]);
 		}
 	}
 }

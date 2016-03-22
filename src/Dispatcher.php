@@ -14,6 +14,7 @@ use Nette\Localization\ITranslator;
 use Nette\Application\UI\ITemplateFactory;
 use Nette\Application\LinkGenerator;
 use Nette\Mail\IMailer;
+use Psr\Log\LoggerInterface;
 
 final class Dispatcher implements IDispatcher
 {
@@ -27,7 +28,10 @@ final class Dispatcher implements IDispatcher
 	private $linkFactory;
 
 	/** @var ITranslator|NULL */
-	private $translator = NULL;
+	private $translator;
+
+	/** @var LoggerInterface|NULL */
+	private $logger;
 
 	/** @var IMailer */
 	private $mailer;
@@ -48,6 +52,51 @@ final class Dispatcher implements IDispatcher
 		$this->mailer = $mailer;
 		$this->templateFactory = $templateFactory;
 		$this->linkFactory = $linkFactory;
+	}
+
+
+	/**
+	 * @param IMessageFactory  $messageFactory
+	 * @throw InvalidMessageException
+	 * @throw DispatchException
+	 */
+	public function dispatch(IMessageFactory $messageFactory)
+	{
+		$message = $messageFactory->create($this->createTemplate(), $this->wwwDir);
+
+		if (!$message instanceof \Nette\Mail\Message) {
+			throw new InvalidMessageException;
+		}
+
+		if (!empty($this->sender) && !$message->getFrom()) {
+			$message->setFrom($this->sender);
+		}
+
+		try {
+			$this->mailer->send($message);
+
+		} catch (\Nette\Mail\SendException $e) {
+			$this->logger && $this->logger->log('email', $e);
+			throw new DispatchException(NULL, 0, $e);
+		}
+	}
+
+
+	/**
+	 * @param LoggerInterface|NULL  $logger
+	 */
+	public function setLogger(LoggerInterface $logger = NULL)
+	{
+		$this->logger = $logger;
+	}
+
+
+	/**
+	 * @return LoggerInterface|NULL
+	 */
+	public function getLogger()
+	{
+		return $this->logger;
 	}
 
 
@@ -84,32 +133,6 @@ final class Dispatcher implements IDispatcher
 	public function getSender()
 	{
 		return $this->sender;
-	}
-
-
-	/**
-	 * @param IMessageFactory  $messageFactory
-	 * @throw InvalidMessageException
-	 * @throw DispatchException
-	 */
-	public function dispatch(IMessageFactory $messageFactory)
-	{
-		$message = $messageFactory->create($this->createTemplate(), $this->wwwDir);
-
-		if (!$message instanceof \Nette\Mail\Message) {
-			throw new InvalidMessageException;
-		}
-
-		if (!empty($this->sender) && !$message->getFrom()) {
-			$message->setFrom($this->sender);
-		}
-
-		try {
-			$this->mailer->send($message);
-
-		} catch (\Nette\Mail\SendException $e) {
-			throw new DispatchException(NULL, 0, $e);
-		}
 	}
 
 
