@@ -10,34 +10,8 @@
 
 namespace JuniWalk\Dispatcher;
 
-use Nette\Localization\ITranslator;
-
 interface IDispatcher
 {
-	/**
-	 * @param ITranslator|NULL  $translator
-	 */
-	public function setTranslator(ITranslator $translator = NULL);
-
-
-	/**
-	 * @return ITranslator|NULL
-	 */
-	public function getTranslator();
-
-
-	/**
-	 * @param string|NULL  $sender
-	 */
-	public function setSender($sender = NULL);
-
-
-	/**
-	 * @return string|NULL
-	 */
-	public function getSender();
-
-
 	/**
 	 * @param IMessageFactory  $messageFactory
 	 * @throw InvalidMessageException
