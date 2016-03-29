@@ -37,15 +37,6 @@ final class DispatcherTest extends \Tester\TestCase
 	}
 
 
-	public function testDispatch()
-	{
-		$dispatcher = $this->getDispatcher();
-		Mailer::setShouldFail(FALSE);
-
-		Assert::same(NULL, $dispatcher->dispatch(new MessageFactory));
-	}
-
-
 	public function testDispatchFailure()
 	{
 		$dispatcher = $this->getDispatcher();
@@ -54,10 +45,26 @@ final class DispatcherTest extends \Tester\TestCase
 		Assert::exception(function () use ($dispatcher) {
 			$dispatcher->dispatch(new MessageFactory);
 		}, 'JuniWalk\Dispatcher\DispatchException');
+	}
+
+
+	public function testInvalidMessage()
+	{
+		$dispatcher = $this->getDispatcher();
+		Mailer::setShouldFail(TRUE);
 
 		Assert::exception(function () use ($dispatcher) {
 			$dispatcher->dispatch(new MessageInvalidFactory);
 		}, 'JuniWalk\Dispatcher\InvalidMessageException');
+	}
+
+
+	public function testDispatch()
+	{
+		$dispatcher = $this->getDispatcher();
+		Mailer::setShouldFail(FALSE);
+
+		Assert::same(NULL, $dispatcher->dispatch(new MessageFactory));
 	}
 
 
