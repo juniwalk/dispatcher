@@ -10,21 +10,6 @@
 
 namespace JuniWalk\Dispatcher;
 
-abstract class RuntimeException extends \RuntimeException
-{
-}
-
-
-abstract class LogicException extends \LogicException
-{
-}
-
-
-final class DispatchException extends RuntimeException
-{
-}
-
-
-final class InvalidMessageException extends LogicException
+final class InvalidMessageException extends \LogicException
 {
 }

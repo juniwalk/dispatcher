@@ -17,8 +17,7 @@
 
 
 	"autoload": {
-		"psr-4": {"JuniWalk\\Dispatcher\\": "src/"},
-		"classmap": ["src/exceptions.php"]
+		"psr-4": {"JuniWalk\\Dispatcher\\": "src/"}
 	},
 
 	"require": {
